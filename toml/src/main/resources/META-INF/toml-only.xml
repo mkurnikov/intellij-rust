@@ -14,5 +14,7 @@
                          displayName="Missing features"
                          enabledByDefault="true" level="WARNING"
                          implementationClass="org.rust.toml.inspections.CargoTomlMissingFeaturesInspection"/>
+
+        <projectService serviceImplementation="org.rust.toml.completion.CargoRegistryIndexService"/>
     </extensions>
 </idea-plugin>
