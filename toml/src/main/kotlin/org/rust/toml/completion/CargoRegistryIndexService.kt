@@ -65,13 +65,17 @@ class CargoRegistryIndexService(project: Project) {
                         println("${treeWalk.pathString}: ${e.message}")
                     }
                 }
+
                 crates[treeWalk.nameString] = CargoRegistryCrate(treeWalk.nameString, versions)
             }
         }
     }
 }
 
-data class CargoRegistryCrate(val name: String, val versions: List<CargoRegistryCrateVersion>)
+data class CargoRegistryCrate(val name: String, val versions: List<CargoRegistryCrateVersion>) {
+    val normalizedName: String
+        get() = name.replace('-', '_')
+}
 data class CargoRegistryCrateVersion(val version: String, val features: List<String>)
 
 data class ParsedVersion(val name: String, val vers: String, val features: HashMap<String, List<String>>)

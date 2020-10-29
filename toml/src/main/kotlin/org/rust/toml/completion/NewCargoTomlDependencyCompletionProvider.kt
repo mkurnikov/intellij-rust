@@ -19,7 +19,7 @@ class NewCargoTomlDependencyCompletionProvider : TomlKeyValueCompletionProviderB
         val prefix = CompletionUtil.getOriginalElement(keyValue.key)?.text ?: return
         val variants = keyValue.project.service<CargoRegistryIndexService>().crates.values
 
-        result.withPrefixMatcher(CargoNamesPrefixMatcher(prefix)).addAllElements(variants.map { variant ->
+        result.withPrefixMatcher(CargoNormalizedNamesPrefixMatcher(prefix)).addAllElements(variants.map { variant ->
             PrioritizedLookupElement.withPriority(
                 LookupElementBuilder
                     .create(variant.dependencyLine)
