@@ -6,6 +6,7 @@
 package org.rust.cargo.runconfig.ui
 
 import com.intellij.execution.ExecutionBundle
+import com.intellij.execution.ui.ProgramInputRedirectPanel
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory
 import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
@@ -34,14 +35,19 @@ abstract class RsCommandConfigurationEditor<T : RsCommandConfiguration>(
     protected val workingDirectory: LabeledComponent<TextFieldWithBrowseButton> =
         WorkingDirectoryComponent()
 
+    protected val programInputRedirect: ProgramInputRedirectPanel =
+        ProgramInputRedirectPanel()
+
     override fun resetEditorFrom(configuration: T) {
         command.text = configuration.command
         workingDirectory.component.text = configuration.workingDirectory?.toString().orEmpty()
+        programInputRedirect.reset(configuration)
     }
 
     override fun applyEditorTo(configuration: T) {
         configuration.command = command.text
         configuration.workingDirectory = currentWorkingDirectory
+        programInputRedirect.applyTo(configuration)
     }
 }
 

@@ -132,6 +132,12 @@ class CargoCommandConfigurationEditor(project: Project)
                 cargoProject()
             }
         }
+        row {
+            cell {
+                programInputRedirect.anchor()
+                programInputRedirect.component(pushX)
+            }
+        }
         labeledRow("Back&trace:", backtraceMode) { backtraceMode() }
     }
 

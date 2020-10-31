@@ -28,6 +28,7 @@ import org.rust.cargo.toolchain.RustChannel
 import org.rust.cargo.toolchain.tools.isRustupAvailable
 import org.rust.ide.experiments.RsExperiments
 import org.rust.openapiext.isFeatureEnabled
+import java.io.File
 import java.nio.file.Path
 import java.nio.file.Paths
 import kotlin.run
@@ -88,6 +89,8 @@ class CargoCommandConfiguration(
         backtrace = cmd.backtraceMode
         workingDirectory = cmd.workingDirectory
         env = cmd.environmentVariables
+        isRedirectInput = cmd.redirectInputFrom != null
+        redirectInputPath = cmd.redirectInputFrom?.path
     }
 
     fun canBeFrom(cmd: CargoCommandLine): Boolean =
@@ -131,6 +134,9 @@ class CargoCommandConfiguration(
     fun clean(): CleanConfiguration {
         val workingDirectory = workingDirectory
             ?: return CleanConfiguration.error("No working directory specified")
+        val redirectInputFrom = redirectInputPath
+            ?.takeIf { isRedirectInput && it.isNotBlank() }
+            ?.let { File(it) }
         val cmd = run {
             val args = ParametersListUtil.parse(command)
             if (args.isEmpty()) {
@@ -140,6 +146,7 @@ class CargoCommandConfiguration(
                 args.first(),
                 workingDirectory,
                 args.drop(1),
+                redirectInputFrom,
                 backtrace,
                 channel,
                 env,
